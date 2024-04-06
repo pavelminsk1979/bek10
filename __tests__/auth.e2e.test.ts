@@ -46,6 +46,7 @@ let jwtTokenFIRST:string=''
             .expect(STATUS_CODE.SUCCESS_200)
 
             //console.log(res.body.accessToken)
+
                 //console.log(res.headers['set-cookie']);
 
         const allCookies = res.headers['set-cookie'];
