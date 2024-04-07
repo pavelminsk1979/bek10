@@ -1,13 +1,22 @@
 import { usersCollection} from "../../db/mongoDb";
+import { userOutputModel} from "../../db/mongoDb";
 import { User} from "../../allTypes/userTypes";
 import {ObjectId} from "mongodb";
 
 
 export const usersRepository={
 
-    async createUser(newUser: User) {
+ /*   async createUser(newUser: User) {
 
         const result = await usersCollection.insertOne(newUser)
+        return result
+    },*/
+
+    async createUser(newUser: User) {
+        debugger
+        //const result = await userOutputModel.insertMany([newUser])
+        const result = await userOutputModel.create(newUser)
+        debugger
         return result
     },
 

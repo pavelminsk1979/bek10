@@ -15,9 +15,10 @@ export const userQueryRepository = {
 
 
     async findUserById(id: string): Promise<OutputUser | null> {
+        debugger
         const user = await usersCollection.findOne({_id: new ObjectId(id)})
         if (!user) return null
-
+        debugger
         return userMaper(user)
     },
 

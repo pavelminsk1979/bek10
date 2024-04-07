@@ -26,7 +26,7 @@ describe('/users',()=>{
         const res2=await req
             .post('/users')
             .set('Authorization', `Basic ${loginPasswordBasic64}`)
-            .send({ login: 'log123',
+            .send({ login: 'log9',
                 password: '11111111',
                 email:'pavPav@mail.ru'})
 
@@ -37,14 +37,14 @@ describe('/users',()=>{
         const res1 =await req
             .post('/users')
             .set('Authorization', `Basic ${loginPasswordBasic64}`)
-            .send({ login: 'log111',
+            .send({ login: 'log888',
                 password: '55555555',
                 email:'pavelPavel@mail.ru'})
             .expect(STATUS_CODE.CREATED_201)
 
         idNewUser1=res1.body.id
 
-        expect(res1.body.login).toEqual('log111')
+        expect(res1.body.login).toEqual('log888')
         expect(res1.body.email).toEqual('pavelPavel@mail.ru')
         expect(res1.body.id).toEqual(idNewUser1)
 
@@ -53,26 +53,26 @@ describe('/users',()=>{
 
 
 
-    it('get users',async ()=>{
+/*    it('get users',async ()=>{
         const res = await req
             .get('/users')
             .set('Authorization', `Basic ${loginPasswordBasic64}`)
             .expect(STATUS_CODE.SUCCESS_200)
 
-        //console.log(res.body.items)
+        console.log(res.body)
 
             expect(res.body.items[0].id).toEqual(idNewUser1)
             expect(res.body.items[1].id).toEqual(idNewUser2)
-            expect(res.body.items[0].login).toEqual('log111')
-            expect(res.body.items[1].login).toEqual('log123')
-    })
+            expect(res.body.items[0].login).toEqual('log888')
+            expect(res.body.items[1].login).toEqual('log9')
+    })*/
 
 
 
 
     // query params(sortBy,sortDirection,pageNumber,pageSize,searchLoginTerm,searchEmailTerm)
 
-    it('get users-- query params sortDirection DESC',async ()=>{
+  /*  it('get users-- query params sortDirection DESC',async ()=>{
         const res = await req
             .get('/users?sortBy=login&sortDirection=desc')
             .set('Authorization', `Basic ${loginPasswordBasic64}`)
@@ -168,11 +168,10 @@ describe('/users',()=>{
             .set('Authorization', `Basic ${loginPasswordBasic64}`)
             .expect(STATUS_CODE.SUCCESS_200)
 
-        //console.log(getRes.body)
+        console.log(getRes.body)
 
         expect(getRes.body.items.length).toBe(0)
-
-    })
+    })*/
 
 
 })

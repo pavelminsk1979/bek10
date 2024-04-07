@@ -30,14 +30,23 @@ const users = await userQueryRepository.getUsers(req.query)
 
 usersRoute.post('/', authMiddleware, postValidationUsers(), errorValidationBlogs, async (req: RequestWithBody<CreateUserModel>, res: Response) => {
 
-    const newUser = await usersService.createUser(req.body)
+    try{
 
-    if (newUser) {
-           res.status(STATUS_CODE.CREATED_201).send(newUser)
+        const newUser = await usersService.createUser(req.body)
 
-    } else {
-         res.sendStatus(STATUS_CODE.BAD_REQUEST_400)
+        if (newUser) {
+
+            res.status(STATUS_CODE.CREATED_201).send(newUser)
+
+        } else {
+            res.sendStatus(STATUS_CODE.BAD_REQUEST_400)
+        }
+    } catch (error) {
+        console.log('users-route.ts post /users' + error)
+        res.sendStatus(STATUS_CODE.SERVER_ERROR_500)
     }
+
+
 
 })
 

@@ -14,7 +14,6 @@ export const usersService = {
 
         const passwordHash = await hashPasswordService.generateHash(password)
 
-
         const newUser = {
             passwordHash,
             login,
@@ -27,15 +26,18 @@ export const usersService = {
             },
             blackListRefreshToken:[]
         }
-
+        debugger
         const result= await usersRepository.createUser(newUser)
 
-        const idNewUser = result.insertedId.toString()
+       // const idNewUser = result.insertedId.toString()
+
+            const idNewUser = result._id.toString()
+        //const idNewUser = result[0].id
 
         if (!idNewUser) return null
-
+        debugger
 const user =  await userQueryRepository.findUserById(idNewUser)
-
+        debugger
         return user
 
     },

@@ -20,6 +20,7 @@ export type User = {
     email: string,
     createdAt: Date,
     emailConfirmation:EmailConfirmation
+    blackListRefreshToken:string[]
 }
 
 export type OutputUser = {
