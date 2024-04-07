@@ -14,8 +14,8 @@ export const usersRepository={
 
     async createUser(newUser: User) {
         debugger
-        const result = await usersModel.insertMany([newUser])
-      /*  const result = await usersModel.create(newUser)*/
+       /* const result = await usersModel.insertMany([newUser])*/
+        const result = await usersModel.create(newUser)
         debugger
         return result
     },

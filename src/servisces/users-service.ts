@@ -31,8 +31,8 @@ export const usersService = {
 
        // const idNewUser = result.insertedId.toString()
 
-            //const idNewUser = result._id.toString()
-        const idNewUser = result[0].id
+            const idNewUser = result._id.toString()
+        //const idNewUser = result[0].id
 
         if (!idNewUser) return null
         debugger
