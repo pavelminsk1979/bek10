@@ -33,7 +33,8 @@ export const createItemsForTest = {
                 confirmationCode: code ?? randomCode(),
                 expirationDate: expirationDate ?? add(new Date(), {hours: 1, minutes: 2}),
                 isConfirmed:isConfirmed ?? false
-            }
+            },
+            blackListRefreshToken:[]
         }
 
         const result = await usersCollection.insertOne(newUserForTest)

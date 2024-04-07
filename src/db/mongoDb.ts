@@ -1,4 +1,4 @@
-import {MongoClient, WithId} from 'mongodb'
+import {MongoClient} from 'mongodb'
 import dotenv from 'dotenv'
 import {Blog} from "../allTypes/blogTypes";
 import {Post} from "../allTypes/postTypes";
@@ -6,34 +6,30 @@ import { User} from "../allTypes/userTypes";
 import {Comment} from "../allTypes/commentTypes";
 import {Visit} from "../allTypes/visitTypes";
 import {UsersDevices} from "../allTypes/usersDevicesTypes";
-//снизу одна строка  для подключенин mongoose к базе данных
 import mongoose from 'mongoose'
 
 
 dotenv.config()
 
 
-const mongoUri = process.env.MONGO_URL || 'mongodb://0.0.0.0:27017';
+const mongoUri = process.env.MONGO_URL ;
 
-/*MONGO_URL -- представляет URL для подключения к MongoDB, используя MongoDB Atlas
-
-'mongodb://0.0.0.0:27017'-предполагает, что MongoDB запущен локально на вашем компьютере. Вы можете использовать эту строку, если у вас есть локально установленный и запущенный сервер MongoDB.*/
-
+/*MONGO_URL -- представляет URL для подключения к MongoDB, использую MongoDB Atlas
+*/
 
 
 if(!mongoUri){
-
-    throw new Error('URL not find(file mongoDb.ts:14')
+    throw new Error('URL not find(file mongoDb/1')
 }
-
-
 
 
 const client = new MongoClient(mongoUri)
 
+
 const db = client.db('projectHW')
 
-//снизу одна строка  для подключенин mongoose к базе данных
+
+//снизу dbName  для  mongoose
 const dbName = 'projectHW'
 
 export const postsCollection = db.collection<Post>('posts')
@@ -49,7 +45,7 @@ export const visitsCollection = db.collection<Visit>('visits')
 export const usersDevicesCollection = db.collection<UsersDevices>('usersDevices')
 
 
-//снизу Scheme  для подключенин mongoose к базе данных
+//снизу Scheme  для  mongoose
 const userScheme = new mongoose.Schema<User>({
     passwordHash: String,
     login: String,
@@ -63,17 +59,20 @@ const userScheme = new mongoose.Schema<User>({
     blackListRefreshToken:[String]
 })
 
-//снизу userOutputModel  для  mongoose к базе данных
-    //export const userOutputModel=mongoose.model('users',userScheme)
-export const userOutputModel = mongoose.model<User>('User', userScheme, 'users');
+
+//снизу userOutputModel  для  mongoose
+
+export const usersModel = mongoose.model<User>('User', userScheme, 'users');
     //'users'   в базе данных будет подраздел под таким названием
 
 export async function runDb() {
     try {
+        await client.connect()
 
-        //await client.connect()
-
-        //снизу одна строка  для подключенин mongoose к базе данных
+        //снизу  для  mongoose
+        if(!mongoUri){
+            throw new Error('URL not find(file mongoDb/2')
+        }
         await mongoose.connect(mongoUri ,{ dbName });
 
         /*  ---MONGO_URL -- представляет URL для подключения к MongoDB, используя MongoDB Atlas
@@ -83,7 +82,7 @@ export async function runDb() {
     } catch (e) {
         console.log(e + 'Connected ERROR with mongoDB')
         await client.close()
-        //снизу одна строка  для подключенин mongoose к базе данных
+        //снизу  для mongoose
         await mongoose.disconnect()
     }
 }
