@@ -56,14 +56,14 @@ export const blogQueryRepository = {
         }
 
         const filter = {blogId}
-        debugger
+
         const posts = await postssModel
             .find(filter)
-            .sort(sortBy, sortDirection)
+            .sort({ [sortBy]: sortDirection })
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
             .exec()
-        debugger
+
         const totalCount = await postssModel.countDocuments(filter)
 
         const pagesCount = Math.ceil(totalCount / pageSize)

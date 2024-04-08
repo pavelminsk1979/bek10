@@ -71,7 +71,7 @@ blogsRoute.get('/:blogId/posts', async (req: RequestWithParamsWithQuery<ParamBlo
     }
 
     const posts = await blogQueryRepository.getPostsForCorrectBlog(sortDataGetPostsForBlogs,blogId)
-    debugger
+
 
     if(!posts){
         res.sendStatus(STATUS_CODE.NOT_FOUND_404)

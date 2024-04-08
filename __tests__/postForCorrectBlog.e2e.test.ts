@@ -61,7 +61,6 @@ describe('/blogs',()=>{
 
     })
 
-/*
 
     it('Get posts for incorrect  blog',async ()=>{
         const res = await req
@@ -93,7 +92,6 @@ const createdPost = res.body
             .expect(STATUS_CODE.SUCCESS_200)
     })
 
-*/
 
 
 })
