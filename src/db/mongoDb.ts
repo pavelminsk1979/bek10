@@ -18,20 +18,20 @@ const mongoUri = process.env.MONGO_URL ;
 */
 
 
-if(!mongoUri){
+/*if(!mongoUri){
     throw new Error('URL not find(file mongoDb/1')
-}
+}*/
 
 
-const client = new MongoClient(mongoUri)
+//const client = new MongoClient(mongoUri)
 
 
-const db = client.db('projectHW')
+//const db = client.db('projectHW')
 
 
 
 
-export const postsCollection = db.collection<Post>('posts')
+/*export const postsCollection = db.collection<Post>('posts')
 
 export const blogsCollection = db.collection<Blog>('blogs')
 
@@ -41,7 +41,7 @@ export const commentsCollection = db.collection<Comment>('comments')
 
 export const visitsCollection = db.collection<Visit>('visits')
 
-export const usersDevicesCollection = db.collection<UsersDevices>('usersDevices')
+export const usersDevicesCollection = db.collection<UsersDevices>('usersDevices')*/
 
 
 //снизу Scheme  для  mongoose
@@ -111,10 +111,21 @@ const visitScheme = new mongoose.Schema<Visit>({
 export const visitsModel = mongoose.model<Visit>('Visit', visitScheme, 'visits');
 
 
+const usersDeviceScheme = new mongoose.Schema<UsersDevices>({
+    issuedAt: Date,
+    expDate: Date,
+    deviceId: String,
+    nameDevice: String,
+    userId: String,
+    ip: String,
+})
+export const usersDevicesModel = mongoose.model<UsersDevices>('UsersDevices', usersDeviceScheme, 'usersDevices');
+
+
 
 export async function runDb() {
     try {
-        await client.connect()
+        //await client.connect()
 
         //снизу  для  mongoose
         if(!mongoUri){
@@ -128,7 +139,7 @@ export async function runDb() {
         console.log('Connected successful with mongoDB')
     } catch (e) {
         console.log(e + 'Connected ERROR with mongoDB')
-        await client.close()
+        //await client.close()
         //снизу  для mongoose
         await mongoose.disconnect()
     }

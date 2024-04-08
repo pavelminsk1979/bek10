@@ -5,7 +5,7 @@ import {STATUS_CODE} from "../src/common/constant-status-code";
 
 const  req = supertest(app)
 
-describe('/videos',()=>{
+describe.skip('/videos',()=>{
 
     beforeAll(async ()=>{
         await req

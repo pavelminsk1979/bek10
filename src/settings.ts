@@ -4,12 +4,10 @@ import {blogsRoute} from "./routes/blogs-route";
 import {postsRoute} from "./routes/posts-route";
 import {DB} from "./db/db";
 import {
-    blogsCollection,
-    commentsCollection,
-    postsCollection,
-    usersCollection,
-    usersDevicesCollection,
-    visitsCollection
+    blogsModel, commentsModel,
+    postssModel, usersDevicesModel,
+    usersModel, visitsModel
+
 } from "./db/mongoDb";
 import {STATUS_CODE} from "./common/constant-status-code";
 import {usersRoute} from "./routes/users-route";
@@ -37,11 +35,11 @@ app.use('/security',securityDevicesRoute)
 
 app.delete('/testing/all-data', async (req: Request, res: Response) => {
     DB.videos.length = 0
-   await postsCollection.deleteMany({})
-   await blogsCollection.deleteMany({})
-    await usersCollection.deleteMany({})
-    await commentsCollection.deleteMany({})
-    await visitsCollection.deleteMany({})
-    await usersDevicesCollection.deleteMany({})
+   await postssModel.deleteMany({})
+   await blogsModel.deleteMany({})
+    await usersModel.deleteMany({})
+    await commentsModel.deleteMany({})
+    await visitsModel.deleteMany({})
+    await usersDevicesModel.deleteMany({})
     res.sendStatus(STATUS_CODE.NO_CONTENT_204)
 })

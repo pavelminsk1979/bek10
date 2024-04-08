@@ -1,5 +1,5 @@
 import {OutputPost, PaginationWithOutputPosts, Post, SortDataPost} from "../allTypes/postTypes";
-import {postsCollection, postssModel} from "../db/mongoDb";
+import { postssModel} from "../db/mongoDb";
 import {postMaper} from "../mapers/postMaper";
 import {ObjectId} from "mongodb";
 

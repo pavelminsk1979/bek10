@@ -1,19 +1,19 @@
-import {commentsCollection, usersDevicesCollection} from "../../db/mongoDb";
+import { usersDevicesModel} from "../../db/mongoDb";
 import {ContentRefreshToken, UsersDevices} from "../../allTypes/usersDevicesTypes";
-import {ObjectId, WithId} from "mongodb";
+import { WithId} from "mongodb";
 
 
 export const usersDevicesRepository = {
 
     async createDevice(newDevice: UsersDevices) {
 
-        return await usersDevicesCollection.insertOne(newDevice)
+        return await usersDevicesModel.create(newDevice)
     },
 
 
     async findDeviceByIdAndDate(result: ContentRefreshToken): Promise<WithId<UsersDevices> | null> {
 
-        const entity = await usersDevicesCollection.findOne({
+        const entity = await usersDevicesModel.findOne({
             deviceId: result.deviceId,
             issuedAt: new Date(result.issuedAtRefreshToken)
         })
@@ -22,14 +22,14 @@ export const usersDevicesRepository = {
 
     async findDeviceById(deviceId: string): Promise<WithId<UsersDevices> | null> {
 
-        const entity = await usersDevicesCollection.findOne({deviceId})
+        const entity = await usersDevicesModel.findOne({deviceId})
         return entity
     },
 
 
     async updateDevice(id: string, issuedAtRefreshToken: Date, expirationRefreshToken: Date) {
 
-        await usersDevicesCollection.updateOne({deviceId: id}, {
+        await usersDevicesModel.updateOne({deviceId: id}, {
             $set: {
                 issuedAt: issuedAtRefreshToken,
                 expDate: expirationRefreshToken
@@ -39,7 +39,7 @@ export const usersDevicesRepository = {
 
     async deleteDevicesExeptCurrentDevice(userId: string, deviceId: string) {
 
-        await usersDevicesCollection.deleteMany({
+        await usersDevicesModel.deleteMany({
             userId: userId,
             deviceId: {$ne: deviceId}
         });
@@ -49,7 +49,7 @@ export const usersDevicesRepository = {
 
 
     async deleteDevice(deviceId: string, issuedAt: Date) {
-        const res = await usersDevicesCollection.deleteOne({
+        const res = await usersDevicesModel.deleteOne({
             deviceId,
             issuedAt: new Date(issuedAt)
         })
@@ -63,7 +63,7 @@ export const usersDevicesRepository = {
 
 
     async deleteDeviceCorrectUser(userId: string, deviceId: string) {
-        const res = await usersDevicesCollection.deleteOne({
+        const res = await usersDevicesModel.deleteOne({
             userId,
             deviceId
         })

@@ -1,4 +1,4 @@
-import {commentsCollection, commentsModel, postsCollection} from "../../db/mongoDb";
+import { commentsModel} from "../../db/mongoDb";
 import {ObjectId} from "mongodb";
 import {commentMaper} from "../../mapers/commentMaper";
 import {SortDataGetCoomentsForCorrectPost} from "../../allTypes/commentTypes";

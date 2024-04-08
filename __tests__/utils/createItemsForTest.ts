@@ -1,6 +1,6 @@
 import {v4 as randomCode} from "uuid";
 import {add} from "date-fns";
-import {usersCollection} from "../../src/db/mongoDb";
+import { usersModel} from "../../src/db/mongoDb";
 
 export const createItemsForTest = {
     createOneItem() {
@@ -37,7 +37,7 @@ export const createItemsForTest = {
             blackListRefreshToken:[]
         }
 
-        const result = await usersCollection.insertOne(newUserForTest)
+        const result = await usersModel.create(newUserForTest)
         return result
     }
 }
