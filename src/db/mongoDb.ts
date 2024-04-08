@@ -6,12 +6,14 @@ import {Comment} from "../allTypes/commentTypes";
 import {Visit} from "../allTypes/visitTypes";
 import {UsersDevices} from "../allTypes/usersDevicesTypes";
 import mongoose from 'mongoose'
+import {WithId} from "mongodb";
 
 
 dotenv.config()
 
 
 const mongoUri = process.env.MONGO_URL ;
+
 
 
 
@@ -29,7 +31,7 @@ const userScheme = new mongoose.Schema<User>({
 })
 
 
-export const usersModel = mongoose.model<User>('User', userScheme, 'users');
+export const usersModel = mongoose.model<User>('users', userScheme);
 
 
 
@@ -42,7 +44,7 @@ const postScheme = new mongoose.Schema<Post>({
     blogName: String,
     createdAt: String
 })
-export const postssModel = mongoose.model<Post>('Post', postScheme, 'posts');
+export const postssModel = mongoose.model<Post>('posts', postScheme);
 
 
 
@@ -53,7 +55,7 @@ const blogScheme = new mongoose.Schema<Blog>({
     createdAt: String,
     isMembership: Boolean,
 })
-export const blogsModel = mongoose.model<Blog>('Blog', blogScheme, 'blogs');
+export const blogsModel = mongoose.model<Blog>('blogs', blogScheme);
 
 
 
@@ -67,7 +69,7 @@ const commentScheme = new mongoose.Schema<Comment>({
     postId: String,
 
 })
-export const commentsModel = mongoose.model<Comment>('Comment', commentScheme, 'comments');
+export const commentsModel = mongoose.model<Comment>('comments', commentScheme);
 
 
 const visitScheme = new mongoose.Schema<Visit>({
@@ -76,7 +78,7 @@ const visitScheme = new mongoose.Schema<Visit>({
     date: Date,
 
 })
-export const visitsModel = mongoose.model<Visit>('Visit', visitScheme, 'visits');
+export const visitsModel = mongoose.model<Visit>('visits', visitScheme);
 
 
 const usersDeviceScheme = new mongoose.Schema<UsersDevices>({
@@ -87,7 +89,7 @@ const usersDeviceScheme = new mongoose.Schema<UsersDevices>({
     userId: String,
     ip: String,
 })
-export const usersDevicesModel = mongoose.model<UsersDevices>('UsersDevices', usersDeviceScheme, 'usersDevices');
+export const usersDevicesModel = mongoose.model<UsersDevices>('usersDevices', usersDeviceScheme);
 
 
 
