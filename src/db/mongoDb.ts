@@ -29,8 +29,7 @@ const client = new MongoClient(mongoUri)
 const db = client.db('projectHW')
 
 
-//снизу dbName  для  mongoose
-const dbName = 'projectHW'
+
 
 export const postsCollection = db.collection<Post>('posts')
 
@@ -73,7 +72,7 @@ export async function runDb() {
         if(!mongoUri){
             throw new Error('URL not find(file mongoDb/2')
         }
-        await mongoose.connect(mongoUri ,{ dbName });
+        await mongoose.connect(mongoUri ,{ dbName:process.env.DB_NAME });
 
         /*  ---MONGO_URL -- представляет URL для подключения к MongoDB, используя MongoDB Atlas
           ---dbName- устанавливаю  имя базе данных*/

@@ -1,7 +1,10 @@
 import {agent as supertest} from "supertest";
 import {app} from "../src/settings";
 import {STATUS_CODE} from "../src/common/constant-status-code";
+import mongoose from "mongoose";
+import * as dotenv from "dotenv";
 
+dotenv.config()
 
 const  req = supertest(app)
 
@@ -10,9 +13,22 @@ describe('/users',()=>{
 
 
     beforeAll(async ()=>{
+
+        const mongoUri = process.env.MONGO_URL ;
+
+        if(!mongoUri){
+            throw new Error('URL not find(file mongoDb/1')
+        }
+
+        await mongoose.connect(mongoUri
+    ,{ dbName:process.env.DB_NAME });
         await req
             .delete ('/testing/all-data')
     })
+
+    afterAll(async () => {
+        await mongoose.disconnect()
+    });
 
 
     let idNewUser1:string
@@ -26,7 +42,7 @@ describe('/users',()=>{
         const res2=await req
             .post('/users')
             .set('Authorization', `Basic ${loginPasswordBasic64}`)
-            .send({ login: 'log9',
+            .send({ login: 'log9987',
                 password: '11111111',
                 email:'pavPav@mail.ru'})
 
