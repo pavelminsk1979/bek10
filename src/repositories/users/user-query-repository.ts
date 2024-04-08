@@ -1,4 +1,4 @@
-import {usersCollection} from "../../db/mongoDb";
+import { usersModel} from "../../db/mongoDb";
 import {ObjectId} from "mongodb";
 import {userMaper} from "../../mapers/userMaper";
 import {OutputUser, PaginationWithOutputUser, QueryUsersInputModal} from "../../allTypes/userTypes";
@@ -9,14 +9,14 @@ export const userQueryRepository = {
 
     async findUserByLoginOrEmail(loginOrEmail: string) {
 
-        const user = await usersCollection.findOne({$or: [{login: loginOrEmail}, {email: loginOrEmail}]})
+        const user = await usersModel.findOne({$or: [{login: loginOrEmail}, {email: loginOrEmail}]})
         return user
     },
 
 
     async findUserById(id: string): Promise<OutputUser | null> {
         debugger
-        const user = await usersCollection.findOne({_id: new ObjectId(id)})
+        const user = await usersModel.findOne({_id: new ObjectId(id)})
         if (!user) return null
         debugger
         return userMaper(user)
@@ -34,6 +34,7 @@ export const userQueryRepository = {
             searchEmailTerm
         } = queryParamsValidationUsers(queryParams)
 
+        const sortDirectionValue = sortDirection === 'asc' ? 1 : -1;
 
         let filter: {/*it's type*/ $or: object[] } = {$or: []}
 
@@ -55,15 +56,15 @@ export const userQueryRepository = {
             })
         }
 
-        const users = await usersCollection
+        const users = await usersModel
             .find(filter.$or.length ? filter : {})
 
-            .sort(sortBy, sortDirection)
+            .sort({ [sortBy]: sortDirectionValue } )
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
-            .toArray()
+            .exec()
 
-        const totalCount = await usersCollection.countDocuments(filter.$or.length ? filter : {})
+        const totalCount = await usersModel.countDocuments(filter.$or.length ? filter : {})
 
         const pagesCount = Math.ceil(totalCount / pageSize)
 

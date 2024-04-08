@@ -64,6 +64,54 @@ const userScheme = new mongoose.Schema<User>({
 export const usersModel = mongoose.model<User>('User', userScheme, 'users');
     //'users'   в базе данных будет подраздел под таким названием
 
+////////////////////////////////////////////////////////////////
+
+const postScheme = new mongoose.Schema<Post>({
+    title: String,
+    shortDescription: String,
+    content: String,
+    blogId: String,
+    blogName: String,
+    createdAt: String
+})
+export const postssModel = mongoose.model<Post>('Post', postScheme, 'posts');
+
+
+
+const blogScheme = new mongoose.Schema<Blog>({
+    name: String,
+    description: String,
+    websiteUrl: String,
+    createdAt: String,
+    isMembership: Boolean,
+})
+export const blogsModel = mongoose.model<Blog>('Blog', blogScheme, 'blogs');
+
+
+
+const commentScheme = new mongoose.Schema<Comment>({
+    content: String,
+    createdAt: String,
+    commentatorInfo: {
+        userId:String,
+        userLogin:String
+    },
+    postId: String,
+
+})
+export const commentsModel = mongoose.model<Comment>('Comment', commentScheme, 'comments');
+
+
+const visitScheme = new mongoose.Schema<Visit>({
+    IP: String,
+    URL: String,
+    date: Date,
+
+})
+export const visitsModel = mongoose.model<Visit>('Visit', visitScheme, 'visits');
+
+
+
 export async function runDb() {
     try {
         await client.connect()

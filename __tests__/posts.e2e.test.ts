@@ -1,7 +1,11 @@
 import {agent as supertest} from "supertest";
 import {app} from "../src/settings";
 import {STATUS_CODE} from "../src/common/constant-status-code";
+import mongoose from "mongoose";
+import * as dotenv from "dotenv";
 
+
+dotenv.config()
 
 const  req = supertest(app)
 
@@ -12,6 +16,16 @@ describe('/posts',()=>{
     let idNewBlog:string
 
     beforeAll(async ()=>{
+
+        const mongoUri = process.env.MONGO_URL ;
+
+        if(!mongoUri){
+            throw new Error('URL not find(file mongoDb/1')
+        }
+
+        await mongoose.connect(mongoUri
+            ,{ dbName:process.env.DB_NAME });
+
         await req
             .delete ('/testing/all-data')
 
@@ -23,8 +37,12 @@ describe('/posts',()=>{
                 websiteUrl:'https://www.outue.Blog/'})
             .expect(STATUS_CODE.CREATED_201)
         idNewBlog=createRes.body.id
-        console.log(idNewBlog)
+        //console.log(idNewBlog)
     })
+
+    afterAll(async () => {
+        await mongoose.disconnect()
+    });
 
     it('get content posts',async ()=>{
         const res = await req

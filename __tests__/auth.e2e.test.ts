@@ -1,16 +1,37 @@
 import {agent as supertest} from "supertest";
 import {app} from "../src/settings";
 import {STATUS_CODE} from "../src/common/constant-status-code";
+import * as dotenv from "dotenv";
+import mongoose from "mongoose";
 
+
+dotenv.config()
 
 const  req = supertest(app)
 
 describe('/auth',()=>{
 
+
+
     beforeAll(async ()=>{
+
+        const mongoUri = process.env.MONGO_URL ;
+
+        if(!mongoUri){
+            throw new Error('URL not find(file mongoDb/1')
+        }
+
+        await mongoose.connect(mongoUri
+            ,{ dbName:process.env.DB_NAME });
+
+
         await req
             .delete ('/testing/all-data')
     })
+
+    afterAll(async () => {
+        await mongoose.disconnect()
+    });
 
 
 
@@ -51,7 +72,8 @@ let jwtTokenFIRST:string=''
 
         const allCookies = res.headers['set-cookie'];
         refreshTokenFIRST = allCookies[0].split(';')[0].split('=')[1];
-        console.log('refreshTokenFIRST'+refreshTokenFIRST);
+
+        //console.log('refreshTokenFIRST'+refreshTokenFIRST);
 
         jwtTokenFIRST=res.body.accessToken
 
@@ -112,7 +134,8 @@ let jwtTokenFIRST:string=''
 
         const allCookies = res.headers['set-cookie'];
         refreshTokenSECOND = allCookies[0].split(';')[0].split('=')[1];
-        console.log(refreshTokenSECOND);
+
+        //console.log(refreshTokenSECOND);
 
         jwtTokenSECOND=res.body.accessToken
 
@@ -148,7 +171,8 @@ let jwtTokenFIRST:string=''
             .set('Cookie', `refreshToken=${refreshTokenFIRST}`)
 
             .expect(STATUS_CODE.SUCCESS_200)
-        console.log(res.body)
+
+        //console.log(res.body)
 
     })
 

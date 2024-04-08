@@ -1,4 +1,3 @@
-import {SortDirection} from "mongodb";
 
 export type Post = {
     title: string
@@ -24,6 +23,8 @@ export type CreatePostInputModel = {
     shortDescription: string
     content: string
 }
+
+type SortDirection="asc" | "desc"
 
 export type QueryBlogInputModal={
     sortBy?:string

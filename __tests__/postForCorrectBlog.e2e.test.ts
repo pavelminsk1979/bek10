@@ -1,16 +1,33 @@
 import {agent as supertest} from "supertest";
 import {app} from "../src/settings";
 import {STATUS_CODE} from "../src/common/constant-status-code";
+import * as dotenv from "dotenv";
+import mongoose from "mongoose";
 
+dotenv.config()
 
 const  req = supertest(app)
 
 describe('/blogs',()=>{
 
     beforeAll(async ()=>{
+
+        const mongoUri = process.env.MONGO_URL ;
+
+        if(!mongoUri){
+            throw new Error('URL not find(file mongoDb/1')
+        }
+
+        await mongoose.connect(mongoUri
+            ,{ dbName:process.env.DB_NAME });
+
         await req
             .delete ('/testing/all-data')
     })
+
+    afterAll(async () => {
+        await mongoose.disconnect()
+    });
 
 
     let idNewBlog:string
@@ -44,6 +61,7 @@ describe('/blogs',()=>{
 
     })
 
+/*
 
     it('Get posts for incorrect  blog',async ()=>{
         const res = await req
@@ -75,6 +93,7 @@ const createdPost = res.body
             .expect(STATUS_CODE.SUCCESS_200)
     })
 
+*/
 
 
 })

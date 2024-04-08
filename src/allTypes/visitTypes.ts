@@ -1,4 +1,4 @@
-import {ObjectId} from "mongodb";
+import { Types } from 'mongoose';
 
 
 export type Visit = {
@@ -11,5 +11,5 @@ export type VisitWithIdMongodb = {
     IP: string
     URL: string
     date: Date
-    _id: ObjectId
+    _id: Types.ObjectId
 }

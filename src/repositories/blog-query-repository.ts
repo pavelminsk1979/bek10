@@ -1,4 +1,4 @@
-import {blogsCollection, postsCollection} from "../db/mongoDb";
+import { blogsModel, postssModel} from "../db/mongoDb";
 import {blogMaper} from "../mapers/blogMaper";
 import {ObjectId} from "mongodb";
 import {OutputBlog, PaginationWithOutputBlog, SortData} from "../allTypes/blogTypes";
@@ -8,6 +8,8 @@ import {postMaper} from "../mapers/postMaper";
 export const blogQueryRepository = {
     async getBlogs(sortData: SortData): Promise<PaginationWithOutputBlog<OutputBlog>> {
         const {searchNameTerm, sortBy, sortDirection, pageNumber, pageSize} = sortData
+
+        const sortDirectionValue = sortDirection === 'asc' ? 1 : -1;
 
         let filter = {}
 
@@ -21,14 +23,13 @@ export const blogQueryRepository = {
         }
 
 
-        const blogs = await blogsCollection
+        const blogs = await blogsModel
             .find(filter)
-            .sort(sortBy, sortDirection)
+            .sort({ [sortBy]: sortDirectionValue } )
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
-            .toArray()
-
-        const totalCount = await blogsCollection.countDocuments(filter)
+            .exec()
+        const totalCount = await blogsModel.countDocuments(filter)
 
         const pagesCount = Math.ceil(totalCount / pageSize)
 
@@ -55,15 +56,15 @@ export const blogQueryRepository = {
         }
 
         const filter = {blogId}
-
-        const posts = await postsCollection
+        debugger
+        const posts = await postssModel
             .find(filter)
             .sort(sortBy, sortDirection)
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
-            .toArray()
-
-        const totalCount = await postsCollection.countDocuments(filter)
+            .exec()
+        debugger
+        const totalCount = await postssModel.countDocuments(filter)
 
         const pagesCount = Math.ceil(totalCount / pageSize)
 
@@ -80,7 +81,7 @@ export const blogQueryRepository = {
 
 
     async findBlogById(id: string) {
-        const blog = await blogsCollection.findOne({_id: new ObjectId(id)})
+        const blog = await blogsModel.findOne({_id: new ObjectId(id)})
         if (blog) {
             return blogMaper(blog)
         } else {

@@ -1,21 +1,38 @@
 import {agent as supertest} from "supertest";
 import {app} from "../src/settings";
-import {authService} from "../src/servisces/auth-service";
-import {createItemsForTest} from "./utils/createItemsForTest";
-import {ObjectId} from "mongodb";
-import {emailAdapter} from "../src/adapters/emailAdapter";
-import {STATUS_CODE} from "../src/common/constant-status-code";
 import {visitLimitService} from "../src/servisces/visitLimitService";
+import mongoose from "mongoose";
+import * as dotenv from "dotenv";
 
+
+dotenv.config()
 
 const  req = supertest(app)
 
 describe('limit visits for login',()=>{
 
     beforeAll(async ()=>{
+
+        const mongoUri = process.env.MONGO_URL ;
+
+        if(!mongoUri){
+            throw new Error('URL not find(file mongoDb/1')
+        }
+
+        await mongoose.connect(mongoUri
+            ,{ dbName:process.env.DB_NAME });
+
         await req
             .delete ('/testing/all-data')
     })
+
+
+    afterAll(async () => {
+        await mongoose.disconnect()
+    });
+
+
+
 
 const visitLimitMethod = visitLimitService.checkLimitVisits;
 

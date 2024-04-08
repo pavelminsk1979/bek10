@@ -20,7 +20,7 @@ describe('/videos',()=>{
             .expect(STATUS_CODE.SUCCESS_200)
 
         expect(res.body).toEqual([])
-        console.log(res.body)
+        //console.log(res.body)
     })
 
 
@@ -123,7 +123,9 @@ describe('/videos',()=>{
 
         const getRes =  await req
             .get('/videos')
-        console.log(getRes.body)
+
+        //console.log(getRes.body)
+
         expect(getRes.body.length).toBe(1)
         expect(getRes.body[0].author).toEqual('hello author')
         expect(getRes.body[0].id).toEqual(idVideo)

@@ -1,6 +1,7 @@
 import {agent as supertest} from "supertest";
 import {app} from "../src/settings";
 import {STATUS_CODE} from "../src/common/constant-status-code";
+import mongoose from "mongoose";
 
 
 const req = supertest(app)
@@ -8,9 +9,23 @@ const req = supertest(app)
 describe('securityDevices', () => {
 
     beforeAll(async () => {
+
+        const mongoUri = process.env.MONGO_URL ;
+
+        if(!mongoUri){
+            throw new Error('URL not find(file mongoDb/1')
+        }
+
+        await mongoose.connect(mongoUri
+            ,{ dbName:process.env.DB_NAME });
+
         await req
             .delete('/testing/all-data')
     })
+
+    afterAll(async () => {
+        await mongoose.disconnect()
+    });
 
 
     const loginPasswordBasic64 = 'YWRtaW46cXdlcnR5'
@@ -85,7 +100,7 @@ describe('securityDevices', () => {
         idDeviceFIRSTLaptop = res.body[0].deviceId
 
         //console.log(res.body)
-        console.log('idDeviceFIRSTLaptop' + ' ' + idDeviceFIRSTLaptop)
+       // console.log('idDeviceFIRSTLaptop' + ' ' + idDeviceFIRSTLaptop)
 
     })
 
@@ -140,7 +155,7 @@ describe('securityDevices', () => {
         idDevicePhone = res.body[0].deviceId
 
         //console.log(res.body)
-        console.log('idDevicePhone' + ' ' + idDevicePhone)
+        //console.log('idDevicePhone' + ' ' + idDevicePhone)
 
     })
 //для проверки один из трех надо раскоментировать ИХ НЕ НАДО УДАЛЯТЬ

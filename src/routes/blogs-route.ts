@@ -57,7 +57,7 @@ blogsRoute.get('/:id', async (req: RequestWithParams<IdStringGetAndDeleteModel>,
 blogsRoute.get('/:blogId/posts', async (req: RequestWithParamsWithQuery<ParamBlogId,GetQueryBlogInputModal>, res: Response) => {
 
     const blogId = req.params.blogId
-debugger
+
     if(!ObjectId.isValid(blogId)){
         res.sendStatus(STATUS_CODE.NOT_FOUND_404)
         return
@@ -71,10 +71,7 @@ debugger
     }
 
     const posts = await blogQueryRepository.getPostsForCorrectBlog(sortDataGetPostsForBlogs,blogId)
-
-
-
-
+    debugger
 
     if(!posts){
         res.sendStatus(STATUS_CODE.NOT_FOUND_404)

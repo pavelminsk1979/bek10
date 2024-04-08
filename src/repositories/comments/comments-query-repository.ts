@@ -1,4 +1,4 @@
-import {commentsCollection, postsCollection} from "../../db/mongoDb";
+import {commentsCollection, commentsModel, postsCollection} from "../../db/mongoDb";
 import {ObjectId} from "mongodb";
 import {commentMaper} from "../../mapers/commentMaper";
 import {SortDataGetCoomentsForCorrectPost} from "../../allTypes/commentTypes";
@@ -10,7 +10,7 @@ export const commentsQueryRepository = {
 
     async findCommentById(id: string) {
 
-        const comment = await commentsCollection.findOne({_id: new ObjectId(id)})
+        const comment = await commentsModel.findOne({_id: new ObjectId(id)})
 
         if(!comment) return null
 
@@ -24,14 +24,16 @@ export const commentsQueryRepository = {
         const {sortBy, sortDirection, pageNumber, pageSize} = sortData
 
 
-        const comments = await commentsCollection
+        const sortDirectionValue = sortDirection === 'asc' ? 1 : -1;
+
+        const comments = await commentsModel
             .find({postId})
-            .sort(sortBy, sortDirection)
+            .sort({ [sortBy]: sortDirectionValue } )
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
-            .toArray()
+            .exec()
 
-        const totalCount = await commentsCollection.countDocuments({postId})
+        const totalCount = await commentsModel.countDocuments({postId})
 
         const pagesCount = Math.ceil(totalCount / pageSize)
 

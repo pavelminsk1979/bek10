@@ -22,14 +22,14 @@ export const blogsSevrice = {
 
         const result = await blogsRepository.createBlog(newBlog)
 
-        if (result.insertedId.toString()) {
+        if (result._id.toString()) {
             return {
                 name: newBlog.name,
                 description: newBlog.description,
                 websiteUrl: newBlog.websiteUrl,
                 isMembership: newBlog.isMembership,
                 createdAt: newBlog.createdAt,
-                id: result.insertedId.toString()
+                id: result._id.toString()
             }
         } else {
             return null
@@ -61,7 +61,7 @@ export const blogsSevrice = {
             return null
         }
 
-        const post = await postQueryRepository.findPostById(createdPost.insertedId.toString())
+        const post = await postQueryRepository.findPostById(createdPost._id.toString())
 
         if (!post) {
             return null

@@ -1,5 +1,5 @@
 import {CreateAndUpdatePostModel} from "../models/CreateAndUpdatePostModel";
-import { postsCollection} from "../db/mongoDb";
+import { postssModel} from "../db/mongoDb";
 import {Post} from "../allTypes/postTypes";
 import {ObjectId} from "mongodb";
 
@@ -10,7 +10,7 @@ export const postsRepository = {
 
 
     async createPost(newPost: Post) {
-        const result = await postsCollection.insertOne(newPost)
+        const result = await postssModel.create(newPost)
         return result
 
     },
@@ -20,7 +20,7 @@ export const postsRepository = {
 
         const {title, blogId, content, shortDescription} = requestBodyPost
 
-        const result = await postsCollection.updateOne({_id: new ObjectId(id)}, {
+        const result = await postssModel.updateOne({_id: new ObjectId(id)}, {
             $set: {
                 title: title,
                 blogId: blogId,
@@ -35,7 +35,7 @@ export const postsRepository = {
 
     async deletePostById(id: string) {
 
-        const result = await postsCollection.deleteOne({_id: new ObjectId(id)})
+        const result = await postssModel.deleteOne({_id: new ObjectId(id)})
 
         return !!result.deletedCount
     }

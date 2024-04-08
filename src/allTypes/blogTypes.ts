@@ -1,4 +1,3 @@
-import {SortDirection} from "mongodb";
 
 export type Blog = {
     name: string,
@@ -24,6 +23,8 @@ export type PaginationWithOutputBlog<I> = {
     totalCount:number,
     items:I[]
 }
+
+type SortDirection="asc" | "desc"
 
 export type QueryBlogInputModal = {
     searchNameTerm?:string

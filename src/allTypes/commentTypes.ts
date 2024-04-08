@@ -1,4 +1,3 @@
-import {SortDirection} from "mongodb";
 
 export type CommentatorInfo={
     userId:string
@@ -20,6 +19,8 @@ export type OutputComment={
     createdAt:string
     commentatorInfo:CommentatorInfo
 }
+
+type SortDirection="asc" | "desc"
 
 export type QueryInputModalGetCommentsForCorrectPost = {
     sortBy?:string

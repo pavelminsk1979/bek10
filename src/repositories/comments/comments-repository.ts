@@ -1,19 +1,19 @@
 import {Comment} from "../../allTypes/commentTypes";
-import {commentsCollection} from "../../db/mongoDb";
+import { commentsModel} from "../../db/mongoDb";
 import {ObjectId} from "mongodb";
 
 export const commentsRepository = {
 
     async createComment(newComment: Comment) {
 
-        const result = await commentsCollection.insertOne(newComment)
+        const result = await commentsModel.create(newComment)
 
         return result
     },
 
     async deleteComentById(id:string){
 
-        const result = await commentsCollection.deleteOne({_id:new ObjectId(id)})
+        const result = await commentsModel.deleteOne({_id:new ObjectId(id)})
 
         return !!result.deletedCount
 
@@ -21,7 +21,7 @@ export const commentsRepository = {
 
     async updateComment(commentId:string,content:string){
 
-        const result = await commentsCollection.updateOne({_id: new ObjectId(commentId)},{
+        const result = await commentsModel.updateOne({_id: new ObjectId(commentId)},{
             $set:{content}
         })
 

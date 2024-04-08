@@ -37,7 +37,7 @@ export const postsSevrice = {
         const result = await postsRepository.createPost(newPost)
 
 
-        if (result.insertedId.toString()) {
+        if (result._id.toString()) {
             return {
                 title: newPost.title,
                 shortDescription: newPost.shortDescription,
@@ -45,7 +45,7 @@ export const postsSevrice = {
                 blogId: newPost.blogId,
                 blogName: newPost.blogName,
                 createdAt: newPost.createdAt,
-                id: result.insertedId.toString()
+                id: result._id.toString()
             }
         } else {
             return null
@@ -93,7 +93,7 @@ export const postsSevrice = {
 
         const result = await commentsRepository.createComment(newCommentForPost)
 
-        const idComment = result.insertedId.toString()
+        const idComment = result._id.toString()
 
         if(!idComment) return {
             code:ResultCode.NotFound,

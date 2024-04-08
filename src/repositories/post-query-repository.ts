@@ -1,5 +1,5 @@
 import {OutputPost, PaginationWithOutputPosts, Post, SortDataPost} from "../allTypes/postTypes";
-import {postsCollection} from "../db/mongoDb";
+import {postsCollection, postssModel} from "../db/mongoDb";
 import {postMaper} from "../mapers/postMaper";
 import {ObjectId} from "mongodb";
 
@@ -10,14 +10,16 @@ export const postQueryRepository = {
 
         const {sortBy, sortDirection, pageNumber, pageSize} = sortDataPost
 
-        const posts = await postsCollection
+        const sortDirectionValue = sortDirection === 'asc' ? 1 : -1;
+
+        const posts = await postssModel
             .find({})
-            .sort(sortBy, sortDirection)
+            .sort({ [sortBy]: sortDirectionValue } )
             .skip((pageNumber - 1) * pageSize)
             .limit(pageSize)
-            .toArray()
+            .exec()
 
-        const totalCount = await postsCollection.countDocuments({})
+        const totalCount = await postssModel.countDocuments({})
 
         const pagesCount = Math.ceil(totalCount / pageSize)
 
@@ -34,7 +36,7 @@ export const postQueryRepository = {
 
 
     async findPostById(id: string) {
-        const post = await postsCollection.findOne({_id: new ObjectId(id)})
+        const post = await postssModel.findOne({_id: new ObjectId(id)})
         if (post) {
             return postMaper(post)
         } else {
