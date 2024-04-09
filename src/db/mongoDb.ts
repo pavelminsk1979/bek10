@@ -6,7 +6,6 @@ import {Comment} from "../allTypes/commentTypes";
 import {Visit} from "../allTypes/visitTypes";
 import {UsersDevices} from "../allTypes/usersDevicesTypes";
 import mongoose from 'mongoose'
-import {WithId} from "mongodb";
 
 
 dotenv.config()
@@ -89,7 +88,7 @@ const usersDeviceScheme = new mongoose.Schema<UsersDevices>({
     userId: String,
     ip: String,
 })
-export const usersDevicesModel = mongoose.model<UsersDevices>('usersDevices', usersDeviceScheme);
+export const usersDevicesModel = mongoose.model<UsersDevices>('users_devices', usersDeviceScheme);
 
 
 
