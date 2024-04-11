@@ -9,21 +9,30 @@ dotenv.config()
 
 const  req = supertest(app)
 
+const emailNewUser ='pavelminsk1979@mail.ru'
+
+/*Тэсты запускать поочереди и открыть базу данных
+ПЕРВЫЙ ТЭСТ ВЫПОЛНИТСЯ--- в базе посмотреть что юзер
+создан и запомнить  confirmationCode---после второго тэста
+он должен быть изменен
+
+ ПОСЛЕ ВТОРОГО ТЕСТА ОТПРАВИТСЯ ПИСЬМО НА ПОЧТУ
+
+ДЛЯ ТРЕЙТЕГО ТЕСТА ИЗ БАЗЫ ДАННЫХ СКОПИРОВАТЬ  confirmationCode
+И ВСТАВИТЬ В ТЕСТ
+Также запомнить passwordHash и после трейтего теста
+passwordHash должен быть изменен*/
+
 describe('/auth',()=>{
-
-
 
     beforeAll(async ()=>{
 
         const mongoUri = process.env.MONGO_URL ;
-
         if(!mongoUri){
             throw new Error('URL not find(file mongoDb/1')
         }
-
         await mongoose.connect(mongoUri
             ,{ dbName:process.env.DB_NAME });
-
 
         await req
             .delete ('/testing/all-data')
@@ -36,9 +45,9 @@ describe('/auth',()=>{
 
 
     const loginPasswordBasic64='YWRtaW46cXdlcnR5'
-    const loginNewUser ='2222222'
+    const loginNewUser ='2222299'
     const passwordNewUser ='222222pasw'
-    const emailNewUser ='pavelminsk1979@mail.ru'
+
 
     it('POST create newUsers',async ()=>{
         const res =await req
@@ -54,6 +63,30 @@ describe('/auth',()=>{
     })
 
 
+})
+
+
+
+
+
+
+describe('/auth/password-recovery',()=>{
+
+    beforeAll(async ()=>{
+        const mongoUri = process.env.MONGO_URL ;
+        if(!mongoUri){
+            throw new Error('URL not find(file mongoDb/1')
+        }
+        await mongoose.connect(mongoUri
+            ,{ dbName:process.env.DB_NAME });
+    })
+
+    afterAll(async () => {
+        await mongoose.disconnect()
+    });
+
+
+
     it(' send letter by  pavelminsk1979@mail.ru with new code ',async ()=>{
         const res =await req
             .post('/auth/password-recovery')
@@ -62,7 +95,33 @@ describe('/auth',()=>{
 
     })
 
+})
 
 
+describe('/auth/new-password',()=>{
+
+    beforeAll(async ()=>{
+        const mongoUri = process.env.MONGO_URL ;
+        if(!mongoUri){
+            throw new Error('URL not find(file mongoDb/1')
+        }
+        await mongoose.connect(mongoUri
+            ,{ dbName:process.env.DB_NAME });
+    })
+
+    afterAll(async () => {
+        await mongoose.disconnect()
+    });
+
+
+
+    it(' send letter by  pavelminsk1979@mail.ru with new code ',async ()=>{
+        const res =await req
+            .post('/auth/new-password')
+            .send({newPassword:'9898pasw',
+                recoveryCode:'2743d1b5-ff60-487e-ba1a-e124d12b6db3'})
+            .expect(STATUS_CODE.NO_CONTENT_204)
+
+    })
 
 })

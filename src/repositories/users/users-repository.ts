@@ -30,7 +30,6 @@ export const usersRepository = {
         return await usersModel.findOne({email})
     },
 
-
     async updateFlagIsConfirmedForUser(code: string) {
 
         const result = await usersModel.updateOne({"emailConfirmation.confirmationCode": code}, {
@@ -65,5 +64,15 @@ export const usersRepository = {
 
         return !!result.matchedCount
     },
+
+
+    async updatePasswordHash(newPasswordHash:string, code:string){
+
+        await usersModel.updateOne({"emailConfirmation.confirmationCode": code}, {
+            $set: { passwordHash:newPasswordHash}
+        })
+
+
+    }
 
 }

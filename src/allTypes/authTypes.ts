@@ -16,3 +16,9 @@ export type AuthCodeConfirmationModel={
 export type AuthEmailModel={
     email:string
 }
+
+
+export type NewPasswordModel={
+    newPassword:string
+    recoveryCode:string
+}

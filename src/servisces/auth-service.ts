@@ -33,10 +33,6 @@ export const authService = {
 
         const letter = emailLetterForRegistration(newUser.emailConfirmation.confirmationCode)
 
-/*        const letter = `<h1>Thank for your registration</h1>
- <p>To finish registration please follow the link below:
-     <a href='https://somesite.com/confirm-email?code=${newUser.emailConfirmation.confirmationCode}'>complete registration</a>
- </p>`*/
 
         try {
             await emailAdapter.sendEmail(newUser.email, letter)
@@ -68,7 +64,7 @@ export const authService = {
 
 
     async updateConfirmationCode(code: string) {
-        return usersRepository.updateFlagIsConfirmedForUser(code)
+        return await usersRepository.updateFlagIsConfirmedForUser(code)
     },
 
 
@@ -123,6 +119,15 @@ export const authService = {
         } catch (error) {
             console.log(' FIlE auth-service.ts  sendEmailForRecoveryPassword' + error)
         }
+    },
+
+    //новый пароль (passwordHash) в базу данных помещаю
+    async recoveryNewPassword(newPassword:string,code:string){
+
+        const newPasswordHash = await hashPasswordService.generateHash(newPassword)
+
+        await usersRepository.updatePasswordHash(newPasswordHash,code)
+
     }
 
 
