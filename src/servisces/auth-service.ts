@@ -6,6 +6,8 @@ import {v4 as randomCode} from 'uuid';
 import {add} from 'date-fns';
 import {emailAdapter} from "../adapters/emailAdapter";
 import {tokenJwtServise} from "./token-jwt-service";
+import {emailLetterForRegistration} from "../common/email_letter/email_letter_for_registration";
+import {emailLetterForRecoveryPassword} from "../common/email_letter/email_letter_for_recovery_password";
 
 
 export const authService = {
@@ -29,8 +31,15 @@ export const authService = {
 
         await usersRepository.createUser(newUser)
 
+        const letter = emailLetterForRegistration(newUser.emailConfirmation.confirmationCode)
+
+/*        const letter = `<h1>Thank for your registration</h1>
+ <p>To finish registration please follow the link below:
+     <a href='https://somesite.com/confirm-email?code=${newUser.emailConfirmation.confirmationCode}'>complete registration</a>
+ </p>`*/
+
         try {
-            await emailAdapter.sendEmail(newUser.email, newUser.emailConfirmation.confirmationCode)
+            await emailAdapter.sendEmail(newUser.email, letter)
         } catch (error) {
             console.log(' FIlE auth-service.ts  registerUser' + error)
         }
@@ -66,10 +75,12 @@ export const authService = {
     async updateCodeConfirmationAndExpirationDate(email: string) {
         const newCode = randomCode()
         const newDate = add(new Date(), {hours: 1, minutes: 2})
+
         await usersRepository.updateCodeConfirmationAndExpirationDate(email, newCode, newDate)
 
         try {
-            await emailAdapter.sendEmail(email, newCode)
+            const letter = emailLetterForRegistration(newCode)
+            await emailAdapter.sendEmail(email, letter)
         } catch (error) {
             console.log(' FIlE auth-service.ts  updateCodeConfirmationAndExpirationDate' + error)
         }
@@ -92,6 +103,26 @@ export const authService = {
         if (!user) return false
 
         return user
+    },
+
+
+    /*Востановление пароля через подтверждение по электронной почте.
+    Электронное письмо должно быть отправлено С КОДОМ ВОСТАНОВЛЕНИЯ ВНУТРИ*/
+    async sendEmailForRecoveryPassword(email:string){
+
+        const newCode = randomCode()
+        const newDate = add(new Date(), {hours: 1, minutes: 2})
+
+        await usersRepository.updateCodeConfirmationAndExpirationDate(email, newCode, newDate)
+
+        try {
+            const letter = emailLetterForRecoveryPassword(newCode)
+
+            await emailAdapter.sendEmail(email, letter)
+
+        } catch (error) {
+            console.log(' FIlE auth-service.ts  sendEmailForRecoveryPassword' + error)
+        }
     }
 
 

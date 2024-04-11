@@ -30,6 +30,7 @@ export const usersRepository = {
         return await usersModel.findOne({email})
     },
 
+
     async updateFlagIsConfirmedForUser(code: string) {
 
         const result = await usersModel.updateOne({"emailConfirmation.confirmationCode": code}, {
