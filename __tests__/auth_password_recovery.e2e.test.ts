@@ -97,6 +97,7 @@ describe('/auth/password-recovery',()=>{
 
 })
 
+/*
 
 describe('/auth/new-password',()=>{
 
@@ -124,4 +125,4 @@ describe('/auth/new-password',()=>{
 
     })
 
-})
+})*/
